@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guerra Digital Studio — Web Development &amp; Security</title>
+<meta name="description" content="Guerra Digital Studio builds fast, secure, hand-crafted websites and hardens them against attack. Web development and AI-assisted security for businesses that can't afford to look generic." />
+
+<meta property="og:title" content="Guerra Digital Studio" />
+<meta property="og:description" content="Fast, secure, hand-crafted websites. Web development &amp; AI-assisted security hardening." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --bg:        #070a12;
+    --bg-2:      #0a0d1a;
+    --bg-soft:   #0d1322;   /* panel */
+    --surface:   #121a2e;   /* hover */
+    --ink:       #dbf5fb;
+    --ink-soft:  #8fa6c0;
+    --ink-faint: #5c7088;
+    --cyan:      #04e5e5;
+    --magenta:   #ff2a6d;
+    --yellow:    #f7f72f;
+    --line:      rgba(4,229,229,.20);
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Chakra Petch', system-ui, sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--magenta); color:#fff; }
+
+  /* grid + neon glow field */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(800px 560px at 82% -8%, rgba(255,42,109,.16), transparent 60%),
+      radial-gradient(760px 520px at 2% 4%, rgba(4,229,229,.14), transparent 58%),
+      linear-gradient(rgba(4,229,229,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(4,229,229,.045) 1px, transparent 1px),
+      var(--bg);
+    background-size:auto, auto, 46px 46px, 46px 46px, auto;
+  }
+  /* scanlines */
+  body::after{
+    content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.5;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px);
+    mix-blend-mode:multiply;
+  }
+  .scanbeam{ position:fixed; left:0; right:0; height:140px; z-index:1; pointer-events:none;
+    background:linear-gradient(rgba(4,229,229,0), rgba(4,229,229,.05), rgba(4,229,229,0));
+    animation:beam 7s linear infinite; }
+  @keyframes beam{ 0%{ top:-160px } 100%{ top:100% } }
+
+  main, header, footer, .sysbar{ position:relative; z-index:2; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+  a{ color:inherit; text-decoration:none; }
+  .mono{ font-family:'Share Tech Mono', monospace; }
+
+  .kicker{
+    font-family:'Share Tech Mono', monospace; font-size:.74rem; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--cyan); display:inline-flex; align-items:center; gap:.6em;
+    text-shadow:0 0 8px rgba(4,229,229,.6);
+  }
+  .kicker::before{ content:""; width:26px; height:1px; background:var(--cyan); display:inline-block; box-shadow:0 0 8px var(--cyan); }
+
+  /* ---------- SYSTEM BAR ---------- */
+  .sysbar{ background:#05080f; border-bottom:1px solid var(--line); }
+  .sysbar .wrap{ display:flex; align-items:center; gap:12px; min-height:34px; font-family:'Share Tech Mono',monospace; font-size:.72rem; letter-spacing:.16em; color:var(--ink-faint); text-transform:uppercase; }
+  .sysbar .dot{ width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); animation:blink 1.6s steps(1) infinite; }
+  .sysbar b{ color:var(--cyan); }
+  @keyframes blink{ 50%{ opacity:.2 } }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    transition:background .3s ease, border-color .3s ease, backdrop-filter .3s;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{ background:rgba(7,10,18,.82); backdrop-filter:blur(12px); border-bottom-color:var(--line); }
+  nav{ display:flex; align-items:center; justify-content:space-between; height:72px; }
+  .logo{ font-family:'Share Tech Mono', monospace; font-weight:400; font-size:1rem; letter-spacing:.04em; }
+  .logo b{ color:var(--magenta); text-shadow:0 0 10px var(--magenta); }
+  .nav-links{ display:flex; gap:34px; align-items:center; }
+  .nav-links a{ font-size:.92rem; letter-spacing:.04em; color:var(--ink-soft); transition:color .2s, text-shadow .2s; }
+  .nav-links a:hover{ color:var(--cyan); text-shadow:0 0 10px rgba(4,229,229,.6); }
+  .nav-cta{
+    border:1px solid var(--cyan); padding:9px 18px; color:var(--cyan)!important;
+    transition:box-shadow .2s, background .2s; font-size:.88rem; letter-spacing:.08em; text-transform:uppercase;
+    clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  }
+  .nav-cta:hover{ background:rgba(4,229,229,.12); box-shadow:0 0 16px rgba(4,229,229,.5); }
+  .menu-btn{ display:none; background:none; border:none; color:var(--cyan); font-size:1.5rem; cursor:pointer; }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:120px 0 90px; }
+  .term{ font-family:'Share Tech Mono',monospace; color:var(--cyan); font-size:.9rem; margin:22px 0 4px; }
+  .term::after{ content:"_"; animation:blink 1s steps(1) infinite; }
+  .hero h1{
+    font-family:'Chakra Petch', sans-serif; font-weight:700;
+    font-size:clamp(2.7rem, 7.6vw, 5.8rem); line-height:1.02; letter-spacing:.01em;
+    margin:18px 0 0; max-width:15ch; text-transform:uppercase;
+    text-shadow:-2px 0 rgba(255,42,109,.55), 2px 0 rgba(4,229,229,.55), 0 0 24px rgba(4,229,229,.25);
+  }
+  .hero h1 em{ font-style:normal; color:var(--magenta); text-shadow:0 0 18px rgba(255,42,109,.8); }
+  .hero h1 .out{ -webkit-text-stroke:1.4px var(--cyan); color:transparent; text-shadow:0 0 18px rgba(4,229,229,.5); }
+  .hero p.lede{ margin-top:28px; max-width:52ch; font-size:clamp(1.02rem,1.5vw,1.24rem); color:var(--ink-soft); font-weight:300; }
+  .hero-actions{ display:flex; gap:16px; margin-top:38px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Share Tech Mono', monospace; font-size:.86rem; letter-spacing:.1em; text-transform:uppercase;
+    padding:15px 30px; cursor:pointer; transition:transform .2s, box-shadow .2s, background .2s, color .2s;
+    display:inline-flex; align-items:center; gap:.6em;
+    clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  }
+  .btn-primary{ background:var(--cyan); color:#04121a; font-weight:500; filter:drop-shadow(0 0 12px rgba(4,229,229,.5)); }
+  .btn-primary:hover{ transform:translateY(-2px); background:#3df3f3; filter:drop-shadow(0 0 20px rgba(4,229,229,.85)); }
+  .btn-ghost{ background:transparent; color:var(--magenta); box-shadow:inset 0 0 0 1px var(--magenta); }
+  .btn-ghost:hover{ transform:translateY(-2px); box-shadow:inset 0 0 0 1px var(--magenta), 0 0 18px rgba(255,42,109,.5); color:#ff5d8f; }
+
+  .stats{ display:flex; gap:54px; margin-top:74px; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:30px; }
+  .stat .n{ font-family:'Chakra Petch',sans-serif; font-weight:700; font-size:2.5rem; line-height:1; color:var(--cyan); text-shadow:0 0 14px rgba(4,229,229,.45); }
+  .stat .l{ font-family:'Share Tech Mono',monospace; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); margin-top:8px; }
+
+  /* ---------- SECTION SHELL ---------- */
+  section.block{ padding:100px 0; border-top:1px solid var(--line); }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:30px; flex-wrap:wrap; margin-bottom:54px; }
+  .section-head h2{
+    font-family:'Chakra Petch',sans-serif; font-weight:700; font-size:clamp(1.9rem,4.4vw,3.2rem);
+    letter-spacing:.01em; line-height:1.05; max-width:16ch; text-transform:uppercase;
+    text-shadow:0 0 18px rgba(4,229,229,.2);
+  }
+  .section-head p{ color:var(--ink-soft); max-width:38ch; font-weight:300; }
+
+  /* HUD panel w/ corner brackets */
+  .panel{ position:relative; background:var(--bg-soft); }
+  .panel::before, .panel::after{ content:""; position:absolute; width:14px; height:14px; pointer-events:none; }
+  .panel::before{ top:0; left:0; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); }
+  .panel::after{ bottom:0; right:0; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+
+  /* ---------- SERVICES ---------- */
+  .services{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .svc{ background:var(--bg-soft); padding:40px 34px; transition:background .3s; position:relative; }
+  .svc:hover{ background:var(--surface); }
+  .svc .num{ font-family:'Share Tech Mono',monospace; font-size:.82rem; color:var(--magenta); letter-spacing:.12em; text-shadow:0 0 10px rgba(255,42,109,.5); }
+  .svc h3{ font-family:'Chakra Petch',sans-serif; font-weight:600; font-size:1.4rem; margin:16px 0 12px; text-transform:uppercase; letter-spacing:.02em; }
+  .svc p{ color:var(--ink-soft); font-size:.96rem; font-weight:300; }
+  .svc ul{ list-style:none; margin-top:18px; }
+  .svc ul li{ font-size:.82rem; color:var(--ink-faint); padding:7px 0; border-top:1px solid var(--line); font-family:'Share Tech Mono',monospace; }
+  .svc ul li::before{ content:"> "; color:var(--cyan); }
+
+  /* ---------- WORK ---------- */
+  .work-grid{ display:grid; gap:22px; }
+  .project{
+    display:grid; grid-template-columns:1fr; gap:24px; padding:36px; border:1px solid var(--line);
+    background:var(--bg-soft); transition:border-color .3s, transform .3s, box-shadow .3s; align-items:center;
+  }
+  @media(min-width:760px){ .project{ grid-template-columns:1.1fr .9fr; } }
+  .project:hover{ border-color:var(--magenta); transform:translateY(-3px); box-shadow:0 0 30px rgba(255,42,109,.18); }
+  .project .tag{ font-family:'Share Tech Mono',monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan); }
+  .project h3{ font-family:'Chakra Petch',sans-serif; font-weight:600; font-size:1.7rem; margin:14px 0 10px; text-transform:uppercase; }
+  .project p{ color:var(--ink-soft); font-size:.97rem; max-width:42ch; font-weight:300; }
+  .project .link{ display:inline-flex; align-items:center; gap:.5em; margin-top:18px; color:var(--magenta); font-family:'Share Tech Mono',monospace; font-size:.84rem; letter-spacing:.06em; }
+  .browser{
+    border:1px solid var(--line); overflow:hidden; background:#050810; aspect-ratio:16/10;
+    display:flex; flex-direction:column;
+  }
+  .browser .bar{ display:flex; gap:7px; padding:11px 14px; border-bottom:1px solid var(--line); background:var(--surface); }
+  .browser .bar i{ width:11px; height:11px; border-radius:50%; background:var(--line); display:block; }
+  .browser .bar i:nth-child(1){ background:var(--magenta); box-shadow:0 0 8px var(--magenta); }
+  .browser .bar i:nth-child(2){ background:var(--yellow); }
+  .browser .bar i:nth-child(3){ background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+  .browser .body{ flex:1; display:flex; align-items:center; justify-content:center; font-family:'Share Tech Mono',monospace; color:var(--cyan); font-size:.78rem; letter-spacing:.06em;
+    background:repeating-linear-gradient(45deg, transparent, transparent 11px, rgba(4,229,229,.05) 11px, rgba(4,229,229,.05) 22px); }
+
+  /* ---------- APPROACH ---------- */
+  .approach{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+  @media(min-width:760px){ .approach{ grid-template-columns:repeat(3,1fr); } }
+  .step{ background:var(--bg-soft); padding:36px 30px; }
+  .step .n{ font-family:'Chakra Petch',sans-serif; font-weight:700; font-size:2.6rem; color:var(--magenta); line-height:1; text-shadow:0 0 16px rgba(255,42,109,.5); }
+  .step h4{ font-family:'Chakra Petch',sans-serif; font-weight:600; font-size:1.05rem; margin:16px 0 8px; text-transform:uppercase; letter-spacing:.04em; }
+  .step p{ color:var(--ink-soft); font-size:.92rem; font-weight:300; }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ text-align:center; padding:120px 0; border-top:1px solid var(--line); }
+  .contact h2{ font-family:'Chakra Petch',sans-serif; font-weight:700; font-size:clamp(2.2rem,6.4vw,4.6rem); line-height:1.02; text-transform:uppercase;
+    text-shadow:-2px 0 rgba(255,42,109,.5), 2px 0 rgba(4,229,229,.5); }
+  .contact h2 em{ font-style:normal; color:var(--magenta); text-shadow:0 0 18px rgba(255,42,109,.8); }
+  .contact p{ color:var(--ink-soft); margin:24px auto 40px; max-width:46ch; font-weight:300; }
+  .mail{ font-family:'Share Tech Mono',monospace; font-size:clamp(1rem,2.4vw,1.5rem); color:var(--cyan); border-bottom:1px solid var(--line); padding-bottom:6px; transition:border-color .2s, text-shadow .2s; }
+  .mail:hover{ border-color:var(--cyan); text-shadow:0 0 14px rgba(4,229,229,.7); }
+
+  /* ---------- FOOTER ---------- */
+  footer{ border-top:1px solid var(--line); padding:40px 0; }
+  footer .wrap{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; align-items:center; }
+  footer .logo{ font-size:.92rem; }
+  footer .social{ display:flex; gap:24px; }
+  footer .social a{ font-family:'Share Tech Mono',monospace; font-size:.82rem; color:var(--ink-faint); transition:color .2s, text-shadow .2s; }
+  footer .social a:hover{ color:var(--cyan); text-shadow:0 0 10px rgba(4,229,229,.6); }
+
+  /* ---------- reveal ---------- */
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .scanbeam{ display:none; }
+  }
+
+  @media(max-width:760px){
+    .nav-links{ display:none; }
+    .menu-btn{ display:block; }
+    .nav-links.open{
+      display:flex; flex-direction:column; position:absolute; top:72px; left:0; right:0;
+      background:var(--bg-2); border-bottom:1px solid var(--line); padding:24px 28px; gap:20px;
+    }
+    .stats{ gap:32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scanbeam" aria-hidden="true"></div>
+
+<div class="sysbar">
+  <div class="wrap">
+    <span class="dot" aria-hidden="true"></span>
+    <span>System online // <b>secure_build</b> active // encryption: <b>enabled</b></span>
+  </div>
+</div>
+
+<header id="header">
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="logo">guerra<b>//</b>digital</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#approach">Approach</a>
+        <a href="#contact" class="nav-cta">Start a project</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">≡</button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="kicker reveal">Guerra Digital Studio</span>
+      <div class="term reveal">&gt; initializing secure_build</div>
+      <h1 class="reveal">Websites built to be <em>fast</em>, <span class="out">secure</span>, and impossible to ignore.</h1>
+      <p class="lede reveal">I'm a freelance web developer who designs, ships, and defends sites for businesses that refuse to look like everyone else. Clean code, real performance, and security baked in from line one.</p>
+      <div class="hero-actions reveal">
+        <a href="#contact" class="btn btn-primary">Start a project →</a>
+        <a href="#work" class="btn btn-ghost">See the work</a>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><div class="n">100/100</div><div class="l">Lighthouse target</div></div>
+        <div class="stat"><div class="n">&lt;1s</div><div class="l">Load times</div></div>
+        <div class="stat"><div class="n">A+</div><div class="l">Security headers</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="block" id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="reveal">What I build</h2>
+        <p class="reveal">From a single landing page to a full custom build — plus the security work most developers skip.</p>
+      </div>
+      <div class="services reveal">
+        <div class="svc">
+          <span class="num">01</span>
+          <h3>Web Development</h3>
+          <p>Custom, hand-coded sites and web apps. No bloated templates, no page-builder lag.</p>
+          <ul><li>Landing pages &amp; marketing sites</li><li>Business &amp; portfolio sites</li><li>Custom front-end builds</li></ul>
+        </div>
+        <div class="svc">
+          <span class="num">02</span>
+          <h3>Security Hardening</h3>
+          <p>AI-assisted audits and defensive fixes to lock down existing sites against common attacks.</p>
+          <ul><li>Security header &amp; HTTPS config</li><li>Dependency &amp; CMS audits</li><li>Content Security Policy setup</li></ul>
+        </div>
+        <div class="svc">
+          <span class="num">03</span>
+          <h3>Performance &amp; SEO</h3>
+          <p>Sites that load instantly and rank — measured, not guessed.</p>
+          <ul><li>Core Web Vitals tuning</li><li>Technical SEO</li><li>Accessibility passes</li></ul>
+        </div>
+        <div class="svc">
+          <span class="num">04</span>
+          <h3>Care &amp; Maintenance</h3>
+          <p>Ongoing updates, monitoring, and patches so your site stays fast and safe.</p>
+          <ul><li>Monthly updates</li><li>Uptime &amp; security monitoring</li><li>Content changes</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="reveal">Selected work</h2>
+        <p class="reveal">A few recent projects. <!-- TODO: swap these for your real projects + live links --></p>
+      </div>
+      <div class="work-grid">
+        <article class="project reveal">
+          <div>
+            <span class="tag">Business site · Security hardening</span>
+            <h3>Guerra Management Group</h3>
+            <p>Full marketing site with hardened hosting configuration, automated security monitoring, and a locked-down content pipeline.</p>
+            <a class="link" href="https://guerramanagementgroup.com" target="_blank" rel="noopener">Visit live site →</a>
+          </div>
+          <div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="body">guerramanagementgroup.com</div></div>
+        </article>
+
+        <article class="project reveal">
+          <div>
+            <span class="tag">Landing page · Web development</span>
+            <h3>Project Two <!-- TODO: rename --></h3>
+            <p>Short description of the goal, what you built, and the result. Keep it to one or two outcome-focused sentences.</p>
+            <a class="link" href="#" target="_blank" rel="noopener">Visit live site →</a>
+          </div>
+          <div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="body">yourproject.com</div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section class="block" id="approach">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="reveal">How it works</h2>
+        <p class="reveal">A simple, transparent process from first message to launch.</p>
+      </div>
+      <div class="approach reveal">
+        <div class="step"><div class="n">01</div><h4>Scope &amp; quote</h4><p>We talk through your goals, timeline, and budget. You get a clear, fixed quote — no surprises.</p></div>
+        <div class="step"><div class="n">02</div><h4>Design &amp; build</h4><p>I design and code in the open, sharing previews so you can steer as it comes together.</p></div>
+        <div class="step"><div class="n">03</div><h4>Launch &amp; harden</h4><p>We ship it, lock it down, and set up monitoring so it stays fast and secure.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <span class="kicker reveal" style="justify-content:center;">Let's build something</span>
+      <h2 class="reveal">Have a project <em>in mind?</em></h2>
+      <p class="reveal">Tell me what you're working on and I'll get back to you within a day. New builds, redesigns, and security work all welcome.</p>
+      <a class="mail reveal" href="mailto:hello@guerradigitalstudio.com"><!-- TODO: your real email -->hello@guerradigitalstudio.com</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">guerra<b>//</b>digital</span>
+    <div class="social">
+      <a href="https://github.com/YOUR-USERNAME" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:hello@guerradigitalstudio.com">Email</a>
+    </div>
+    <span style="color:var(--ink-faint);font-family:'Share Tech Mono',monospace;font-size:.78rem;">© 2026 Guerra Digital Studio</span>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
+  onScroll(); window.addEventListener('scroll', onScroll, { passive:true });
+
+  const btn = document.getElementById('menuBtn');
+  const links = document.getElementById('navLinks');
+  btn.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting){ setTimeout(() => e.target.classList.add('in'), i * 70); io.unobserve(e.target); }
+    });
+  }, { threshold:.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
