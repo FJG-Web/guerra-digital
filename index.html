@@ -211,9 +211,61 @@
   footer .social a{ font-family:'Share Tech Mono',monospace; font-size:.82rem; color:var(--ink-faint); transition:color .2s, text-shadow .2s; }
   footer .social a:hover{ color:var(--cyan); text-shadow:0 0 10px rgba(4,229,229,.6); }
 
+  /* ---------- CASE STUDY LABELS ---------- */
+  .project p strong{ color:var(--cyan); font-weight:500; }
+  .project .case{ display:grid; gap:6px; margin-top:4px; }
+  .project .case span{ color:var(--ink-soft); font-size:.93rem; font-weight:300; }
+  .project .case b{ font-family:'Share Tech Mono',monospace; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); font-weight:400; margin-right:8px; }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .quotes{ display:grid; gap:22px; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); }
+  .quote{ background:var(--bg-soft); border:1px solid var(--line); padding:32px; position:relative; }
+  .quote::before{ content:"\201C"; font-family:'Chakra Petch',sans-serif; font-size:3.2rem; line-height:1; color:var(--magenta); opacity:.5; position:absolute; top:14px; right:20px; }
+  .quote p{ color:var(--ink); font-size:1.02rem; font-weight:300; line-height:1.55; }
+  .quote .who{ margin-top:20px; font-family:'Share Tech Mono',monospace; font-size:.8rem; letter-spacing:.06em; color:var(--cyan); }
+  .quote .who span{ display:block; color:var(--ink-faint); margin-top:3px; }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{ display:grid; gap:44px; align-items:center; }
+  @media(min-width:760px){ .about-grid{ grid-template-columns:.62fr 1fr; } }
+  .id-card{ position:relative; aspect-ratio:4/5; border:1px solid var(--line); background:#070b14;
+    display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .id-card img{ width:100%; height:100%; object-fit:cover; }
+  .id-card .ph{ font-family:'Share Tech Mono',monospace; font-size:.78rem; letter-spacing:.1em; color:var(--ink-faint); text-align:center; padding:20px;
+    background:repeating-linear-gradient(45deg, transparent, transparent 11px, rgba(4,229,229,.05) 11px, rgba(4,229,229,.05) 22px); width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .id-card::before, .id-card::after{ content:""; position:absolute; width:18px; height:18px; }
+  .id-card::before{ top:8px; left:8px; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); }
+  .id-card::after{ bottom:8px; right:8px; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+  .about-bio p{ color:var(--ink-soft); font-size:1.08rem; font-weight:300; margin-bottom:16px; }
+  .about-bio p:first-child{ color:var(--ink); font-size:1.2rem; }
+  .about-sign{ font-family:'Share Tech Mono',monospace; color:var(--cyan); font-size:.86rem; letter-spacing:.06em; margin-top:8px; }
+
   /* ---------- reveal ---------- */
   .reveal{ opacity:0; transform:translateY(26px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
   .reveal.in{ opacity:1; transform:none; }
+
+  /* ---------- CONTACT FORM ---------- */
+  .contact2 .section-head h2 em{ font-style:normal; color:var(--magenta); text-shadow:0 0 18px rgba(255,42,109,.8); }
+  .contact-grid{ display:grid; gap:42px; }
+  @media(min-width:820px){ .contact-grid{ grid-template-columns:.8fr 1.2fr; } }
+  .contact-info .ci-row{ padding:18px 0; border-top:1px solid var(--line); }
+  .contact-info .ci-row:first-child{ border-top:none; padding-top:0; }
+  .contact-info b{ display:block; font-family:'Share Tech Mono',monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px; font-weight:400; }
+  .contact-info a, .contact-info span{ color:var(--ink); font-size:1rem; }
+  .contact-info a{ color:var(--cyan); }
+  .contact-info a:hover{ text-shadow:0 0 10px rgba(4,229,229,.6); }
+  .contact-form{ display:grid; gap:18px; }
+  .contact-form label{ display:grid; gap:8px; font-family:'Share Tech Mono',monospace; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .req{ color:var(--magenta); }
+  .contact-form input, .contact-form select, .contact-form textarea{
+    background:#070b14; border:1px solid var(--line); color:var(--ink); padding:13px 14px;
+    font-family:'Chakra Petch',sans-serif; font-size:1rem; width:100%; transition:border-color .2s, box-shadow .2s; }
+  .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus{
+    outline:none; border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan), 0 0 14px rgba(4,229,229,.28); }
+  .contact-form textarea{ resize:vertical; min-height:120px; }
+  .contact-form select{ appearance:none; -webkit-appearance:none; cursor:pointer; }
+  .form-note{ font-size:.82rem; color:var(--ink-faint); font-weight:300; line-height:1.5; }
+  .contact-form .btn{ justify-self:start; border:none; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; }
@@ -361,7 +413,11 @@
           <div>
             <span class="tag">Landing page · Web development</span>
             <h3>Project Two <!-- TODO: rename --></h3>
-            <p>Short description of the goal, what you built, and the result. Keep it to one or two outcome-focused sentences.</p>
+            <div class="case">
+              <span><b>Problem</b> What the client was struggling with before. <!-- TODO --></span>
+              <span><b>Solution</b> What you designed and built to solve it. <!-- TODO --></span>
+              <span><b>Result</b> The measurable outcome — e.g. 40% faster load, 100/100 Lighthouse. <!-- TODO --></span>
+            </div>
             <a class="link" href="#" target="_blank" rel="noopener">Visit live site →</a>
           </div>
           <div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="body">yourproject.com</div></div>
@@ -385,13 +441,93 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
+  <!-- TESTIMONIALS -->
+  <section class="block" id="signal">
     <div class="wrap">
-      <span class="kicker reveal" style="justify-content:center;">Let's build something</span>
-      <h2 class="reveal">Have a project <em>in mind?</em></h2>
-      <p class="reveal">Tell me what you're working on and I'll get back to you within a day. New builds, redesigns, and security work all welcome.</p>
-      <a class="mail reveal" href="mailto:hello@guerradigitalstudio.com"><!-- TODO: your real email -->hello@guerradigitalstudio.com</a>
+      <div class="section-head">
+        <h2 class="reveal">Signal</h2>
+        <p class="reveal">What people say after working with me. <!-- TODO: replace with real testimonials. Even one quote from a peer or pro-bono client builds trust. --></p>
+      </div>
+      <div class="quotes">
+        <div class="quote reveal">
+          <p>A short, specific quote about what it was like to work with you and the result you delivered. Keep it real and concrete. <!-- TODO --></p>
+          <div class="who">Client Name<span>Role · Company</span></div>
+        </div>
+        <div class="quote reveal">
+          <p>A second quote — ideally one that speaks to your reliability, communication, or technical skill. <!-- TODO --></p>
+          <div class="who">Client Name<span>Role · Company</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="block" id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="reveal">Who's behind it</h2>
+      </div>
+      <div class="about-grid reveal">
+        <div class="id-card">
+          <!-- TODO: add a photo — replace the .ph div below with: <img src="photo.jpg" alt="Your name"> -->
+          <div class="ph">[ ADD A PHOTO HERE ]<br>professional, friendly, real</div>
+        </div>
+        <div class="about-bio">
+          <p>Hi — I'm [Your Name], the developer behind Guerra Digital Studio. <!-- TODO --></p>
+          <p>Write 2–3 sentences on who you are and why you do this work: your background, what you care about, and why you build custom and secure instead of cheap templates. Clients are hiring a person, so let them meet one.</p>
+          <p>When you work with me, you get direct access to the person writing the code — no account managers, no handoffs.</p>
+          <div class="about-sign">— [Your Name], Founder // Guerra Digital Studio</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="block contact2" id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Get in touch</span>
+        <h2>Tell me what you're <em>working on</em>.</h2>
+        <p>Send a note about the project, the redesign, or the problem keeping you up at night. I'll follow up within one business day.</p>
+      </div>
+      <div class="contact-grid">
+        <aside class="contact-info reveal">
+          <div class="ci-row"><b>Email</b><a href="mailto:hello@guerradigitalstudio.com"><!-- TODO: your real email -->hello@guerradigitalstudio.com</a></div>
+          <div class="ci-row"><b>Response</b><span>Within 1 business day · Mon–Fri</span></div>
+          <div class="ci-row"><b>Location</b><span>Spotsylvania, Virginia · Serving the U.S.</span></div>
+          <div class="ci-row"><b>Hours</b><span>9:00 AM – 6:00 PM ET</span></div>
+        </aside>
+
+        <!-- TODO: replace YOUR_FORM_ID with your Formspree form ID (see notes) for the form to send -->
+        <form class="contact-form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <input type="hidden" name="_subject" value="New inquiry from guerradigitalstudio.com">
+          <label>Name <span class="req">*</span>
+            <input type="text" name="name" required>
+          </label>
+          <label>Email <span class="req">*</span>
+            <input type="email" name="email" required>
+          </label>
+          <label>Company / Organization
+            <input type="text" name="company">
+          </label>
+          <label>What do you need? <span class="req">*</span>
+            <select name="service" required>
+              <option value="" disabled selected>Select one…</option>
+              <option>Web Development</option>
+              <option>Advanced Development / Backend</option>
+              <option>Design &amp; UX</option>
+              <option>Security Hardening</option>
+              <option>Strategy &amp; Consulting</option>
+              <option>General Inquiry</option>
+            </select>
+          </label>
+          <label>How can I help? <span class="req">*</span>
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <p class="form-note">By submitting, you agree to be contacted at the email above. I don't share or sell your information.</p>
+          <button type="submit" class="btn btn-primary">Send message →</button>
+        </form>
+      </div>
     </div>
   </section>
 
