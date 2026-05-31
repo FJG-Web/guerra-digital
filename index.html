@@ -302,6 +302,7 @@
   .contact-form textarea{ resize:vertical; min-height:120px; }
   .contact-form select{ appearance:none; -webkit-appearance:none; cursor:pointer; }
   .form-note{ font-size:.82rem; color:var(--ink-faint); font-weight:300; line-height:1.5; }
+  .form-status{ font-family:'Share Tech Mono',monospace; font-size:.86rem; letter-spacing:.03em; min-height:1.3em; margin-top:2px; }
   .contact-form .btn{ justify-self:start; border:none; }
 
   @media (prefers-reduced-motion: reduce){
@@ -541,9 +542,11 @@
           <div class="ci-row"><b>Hours</b><span>9:00 AM – 6:00 PM ET</span></div>
         </aside>
 
-        <!-- TODO: replace YOUR_FORM_ID with your Formspree form ID (see notes) for the form to send -->
-        <form class="contact-form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <input type="hidden" name="_subject" value="New inquiry from guerradigitalstudio.com">
+        <form class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="5c9f29e9-a94a-4398-9f3c-96eec64206ce">
+          <input type="hidden" name="subject" value="New inquiry from guerradigitalstudio.com">
+          <input type="hidden" name="from_name" value="Guerra Digital Studio website">
+          <input type="checkbox" name="botcheck" tabindex="-1" style="display:none" aria-hidden="true">
           <label>Name <span class="req">*</span>
             <input type="text" name="name" required>
           </label>
@@ -569,6 +572,7 @@
           </label>
           <p class="form-note">By submitting, you agree to be contacted at the email above. I don't share or sell your information.</p>
           <button type="submit" class="btn btn-primary">Send message →</button>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>
@@ -604,6 +608,41 @@
     });
   }, { threshold:.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // contact form -> Web3Forms (AJAX, with inline status)
+  const cform = document.querySelector('.contact-form');
+  if (cform) {
+    const status = document.getElementById('form-status');
+    cform.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!cform.checkValidity()) { cform.reportValidity(); return; }
+      const btn = cform.querySelector('button[type="submit"]');
+      const label = btn.textContent;
+      btn.textContent = 'Sending…'; btn.disabled = true;
+      status.textContent = ''; status.style.color = 'var(--ink-faint)';
+      try {
+        const res = await fetch(cform.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(cform)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          cform.reset();
+          status.textContent = '✓ Message sent — I will get back to you within one business day.';
+          status.style.color = 'var(--cyan)';
+        } else {
+          status.textContent = 'Could not send. Please email hello@guerradigitalstudio.com directly.';
+          status.style.color = 'var(--magenta)';
+        }
+      } catch (err) {
+        status.textContent = 'Network error. Please email hello@guerradigitalstudio.com directly.';
+        status.style.color = 'var(--magenta)';
+      } finally {
+        btn.textContent = label; btn.disabled = false;
+      }
+    });
+  }
 </script>
 </body>
 </html>
