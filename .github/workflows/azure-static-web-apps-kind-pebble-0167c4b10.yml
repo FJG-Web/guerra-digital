@@ -19,6 +19,20 @@ jobs:
         with:
           submodules: true
           lfs: false
+      - name: Fetch self-hosted fonts (pinned, checksum-verified)
+        run: |
+          set -euo pipefail
+          dest="$GITHUB_WORKSPACE/assets/fonts"; mkdir -p "$dest"; cd "$(mktemp -d)"
+          npm pack --silent @fontsource-variable/plus-jakarta-sans@5.3.0 @fontsource-variable/inter@5.3.0 @fontsource-variable/jetbrains-mono@5.3.0
+          for t in *.tgz; do mkdir "${t%.tgz}"; tar xzf "$t" -C "${t%.tgz}"; done
+          cp fontsource-variable-plus-jakarta-sans-5.3.0/package/files/plus-jakarta-sans-latin-wght-normal.woff2 "$dest/plus-jakarta-sans.woff2"
+          cp fontsource-variable-inter-5.3.0/package/files/inter-latin-wght-normal.woff2 "$dest/inter.woff2"
+          cp fontsource-variable-jetbrains-mono-5.3.0/package/files/jetbrains-mono-latin-wght-normal.woff2 "$dest/jetbrains-mono.woff2"
+          cd "$dest" && sha256sum -c - <<'SUMS'
+          153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79  plus-jakarta-sans.woff2
+          3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62  inter.woff2
+          18be452724bfdc236c074ca94a249a7f41a86752c7d04ab258ce9ed5651f6a7e  jetbrains-mono.woff2
+          SUMS
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -31,6 +45,7 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "." # Built app content directory - optional
+          skip_app_build: true
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
