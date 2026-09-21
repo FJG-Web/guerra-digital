@@ -18,302 +18,10 @@
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='23' font-family='Plus Jakarta Sans, sans-serif' font-size='20' font-weight='800' text-anchor='middle' fill='%23ffffff'%3EG%3C/text%3E%3C/svg%3E" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" /></noscript>
 
-<style>
-  :root{
-    --bg:        #ffffff;
-    --bg-2:      #f6f8fb;
-    --bg-soft:   #f8fafc;   /* panel */
-    --surface:   #eef3f9;   /* hover */
-    --ink:       #16202e;
-    --ink-soft:  #41505f;
-    --ink-faint: #5e6b7a;
-    --cyan:      #2563eb;   /* trustworthy blue (primary accent) */
-    --cyan-dk:   #1d4ed8;
-    --magenta:   #2563eb;   /* second accent now also blue for calm, cohesive look */
-    --yellow:    #0ea5a3;
-    --line:      #e3e9f0;
-    --line-2:    #d7dfe9;
-    --maxw: 1180px;
-  }
-
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  html{ scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    line-height:1.65;
-    overflow-x:hidden;
-  }
-  ::selection{ background:rgba(37,99,235,.16); color:var(--ink); }
-
-  /* soft, friendly background wash — no grid/scanlines */
-  body::before{
-    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:
-      radial-gradient(820px 560px at 88% -10%, rgba(37,99,235,.06), transparent 60%),
-      radial-gradient(760px 520px at -4% 2%, rgba(14,165,163,.05), transparent 58%),
-      var(--bg);
-  }
-  body::after{ content:none; }
-  .scanbeam{ display:none; }
-
-  main, header, footer, .sysbar{ position:relative; z-index:2; }
-
-  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
-  a{ color:inherit; text-decoration:none; }
-  .mono{ font-family:'JetBrains Mono', monospace; }
-
-  .kicker{
-    font-family:'JetBrains Mono', monospace; font-size:.74rem; letter-spacing:.18em;
-    text-transform:uppercase; color:var(--cyan); display:inline-flex; align-items:center; gap:.6em;
-    font-weight:500;
-  }
-  .kicker::before{ content:""; width:24px; height:2px; background:var(--cyan); display:inline-block; border-radius:2px; }
-
-  /* ---------- SYSTEM BAR (now a warm tagline strip) ---------- */
-  .sysbar{ background:var(--bg-2); border-bottom:1px solid var(--line); }
-  .sysbar .wrap{ display:flex; align-items:center; gap:12px; min-height:38px; font-family:'JetBrains Mono',monospace; font-size:.74rem; letter-spacing:.04em; color:var(--ink-soft); }
-  .sysbar .dot{ width:8px; height:8px; border-radius:50%; background:var(--yellow); }
-  .sysbar b{ color:var(--ink-soft); font-weight:600; }
-
-  /* ---------- NAV ---------- */
-  header{
-    position:sticky; top:0; z-index:50;
-    transition:background .3s ease, border-color .3s ease, backdrop-filter .3s;
-    border-bottom:1px solid transparent;
-  }
-  header.scrolled{ background:rgba(255,255,255,.85); backdrop-filter:blur(12px); border-bottom-color:var(--line); }
-  nav{ display:flex; align-items:center; justify-content:space-between; height:72px; }
-  .logo{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:1.18rem; letter-spacing:-.01em; color:var(--ink); }
-  .logo b{ color:var(--cyan); font-weight:800; }
-  .logo .studio{ font-weight:400; color:var(--ink-soft); margin-left:.18em; letter-spacing:.01em; }
-  .nav-links{ display:flex; gap:32px; align-items:center; }
-  .nav-links a{ font-size:.95rem; font-weight:500; color:var(--ink-soft); transition:color .2s; }
-  .nav-links a:hover{ color:var(--cyan); }
-  .nav-cta{
-    border:none; background:var(--cyan); padding:10px 20px; color:#fff!important;
-    transition:background .2s, transform .2s, box-shadow .2s; font-size:.9rem; font-weight:600; letter-spacing:0; text-transform:none;
-    border-radius:9px; box-shadow:0 1px 2px rgba(37,99,235,.25);
-  }
-  .nav-cta:hover{ background:var(--cyan-dk); transform:translateY(-1px); box-shadow:0 6px 16px rgba(37,99,235,.28); }
-  .menu-btn{ display:none; background:none; border:none; color:var(--ink); font-size:1.5rem; cursor:pointer; }
-
-  /* ---------- HERO ---------- */
-  .hero{ padding:104px 0 80px; }
-  .term{ font-family:'JetBrains Mono',monospace; color:var(--ink-soft); font-size:.92rem; margin:22px 0 4px; font-weight:400; }
-  .hero h1{
-    font-family:'Plus Jakarta Sans', sans-serif; font-weight:800;
-    font-size:clamp(2.5rem, 6.6vw, 4.6rem); line-height:1.06; letter-spacing:-.02em;
-    margin:18px 0 0; max-width:18ch; text-transform:none; color:var(--ink);
-  }
-  .hero h1 em{ font-style:normal; color:var(--cyan); }
-  .hero h1 .out{ -webkit-text-stroke:0; color:var(--cyan); }
-  .hero p.lede{ margin-top:24px; max-width:54ch; font-size:clamp(1.05rem,1.5vw,1.22rem); color:var(--ink-soft); font-weight:400; }
-  .hero-actions{ display:flex; gap:14px; margin-top:36px; flex-wrap:wrap; }
-  .btn{
-    font-family:'Plus Jakarta Sans', sans-serif; font-size:.98rem; letter-spacing:0; text-transform:none; font-weight:600;
-    padding:14px 26px; cursor:pointer; transition:transform .2s, box-shadow .2s, background .2s, color .2s;
-    display:inline-flex; align-items:center; gap:.5em; border-radius:10px;
-  }
-  .btn-primary{ background:var(--cyan); color:#fff; box-shadow:0 1px 2px rgba(37,99,235,.25); }
-  .btn-primary:hover{ transform:translateY(-2px); background:var(--cyan-dk); box-shadow:0 8px 20px rgba(37,99,235,.28); }
-  .btn-ghost{ background:#fff; color:var(--cyan); box-shadow:inset 0 0 0 1.5px var(--line-2); }
-  .btn-ghost:hover{ transform:translateY(-2px); box-shadow:inset 0 0 0 1.5px var(--cyan); color:var(--cyan-dk); }
-
-  .stats{ display:flex; gap:54px; margin-top:64px; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:30px; }
-  .stat .n{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:2.4rem; line-height:1; color:var(--ink); letter-spacing:-.02em; }
-  .stat .l{ font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); margin-top:8px; }
-
-  /* ---------- SECTION SHELL ---------- */
-  section.block{ padding:92px 0; border-top:1px solid var(--line); }
-  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:30px; flex-wrap:wrap; margin-bottom:52px; }
-  .section-head h2{
-    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.8rem,4vw,2.8rem);
-    letter-spacing:-.02em; line-height:1.1; max-width:18ch; text-transform:none; color:var(--ink);
-  }
-  .section-head p{ color:var(--ink-soft); max-width:40ch; font-weight:400; }
-
-  /* card panel (soft, rounded) */
-  .panel{ position:relative; background:var(--bg-soft); border-radius:14px; }
-  .panel::before, .panel::after{ content:none; }
-
-  /* ---------- SERVICES ---------- */
-  .services{ display:grid; grid-template-columns:1fr; gap:16px; background:transparent; border:none; }
-  @media(min-width:600px){ .services{ grid-template-columns:repeat(2,1fr); } }
-  @media(min-width:1200px){ .services{ grid-template-columns:repeat(4,1fr); } }
-  .svc{ background:var(--bg-soft); border:1px solid var(--line); border-radius:14px; padding:34px 30px; transition:border-color .25s, box-shadow .25s, transform .25s; position:relative; }
-  .svc:hover{ border-color:var(--line-2); box-shadow:0 10px 30px rgba(22,32,46,.07); transform:translateY(-3px); }
-  .svc .num{ font-family:'JetBrains Mono',monospace; font-size:.82rem; color:var(--cyan); letter-spacing:.06em; font-weight:500; }
-  .svc h3{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1.28rem; margin:14px 0 10px; text-transform:none; letter-spacing:-.01em; color:var(--ink); }
-  .svc h3 .soon{ font-family:'JetBrains Mono',monospace; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; color:var(--yellow); border:1px solid rgba(14,165,163,.45); padding:2px 7px; border-radius:20px; vertical-align:middle; margin-left:8px; white-space:nowrap; }
-  .svc.future{ opacity:.82; }
-  .svc p{ color:var(--ink-soft); font-size:.97rem; font-weight:400; }
-  .svc ul{ list-style:none; margin-top:18px; }
-  .svc ul li{ font-size:.88rem; color:var(--ink-soft); padding:8px 0; border-top:1px solid var(--line); font-family:'Inter',sans-serif; display:flex; gap:.55em; align-items:flex-start; }
-  .svc ul li::before{ content:"✓"; color:var(--cyan); font-size:.82rem; line-height:1.5; }
-
-  /* ---------- WORK ---------- */
-  .work-grid{ display:grid; gap:22px; }
-  .project{
-    display:grid; grid-template-columns:1fr; gap:24px; padding:32px; border:1px solid var(--line); border-radius:16px;
-    background:var(--bg-soft); transition:border-color .3s, transform .3s, box-shadow .3s; align-items:center;
-  }
-  @media(min-width:760px){ .project{ grid-template-columns:1.1fr .9fr; } }
-  .project:hover{ border-color:var(--line-2); transform:translateY(-3px); box-shadow:0 14px 36px rgba(22,32,46,.08); }
-  .project .tag{ font-family:'JetBrains Mono',monospace; font-size:.74rem; letter-spacing:.04em; text-transform:none; color:var(--cyan); font-weight:500; }
-  .project h3{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1.5rem; margin:12px 0 10px; text-transform:none; letter-spacing:-.01em; color:var(--ink); }
-  .project p{ color:var(--ink-soft); font-size:.98rem; max-width:44ch; font-weight:400; }
-  .project .link{ display:inline-flex; align-items:center; gap:.5em; margin-top:18px; color:var(--cyan); font-family:'Plus Jakarta Sans',sans-serif; font-size:.95rem; letter-spacing:0; font-weight:600; }
-  .project .link:hover{ color:var(--cyan-dk); }
-  .browser{
-    border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; aspect-ratio:16/10;
-    display:flex; flex-direction:column;
-  }
-  .browser .bar{ display:flex; gap:7px; padding:11px 14px; border-bottom:1px solid var(--line); background:var(--bg-2); }
-  .browser .bar i{ width:11px; height:11px; border-radius:50%; background:var(--line-2); display:block; }
-  .browser .bar i:nth-child(1){ background:#f87171; }
-  .browser .bar i:nth-child(2){ background:#fbbf24; }
-  .browser .bar i:nth-child(3){ background:#34d399; }
-  .browser .body{ flex:1; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; color:var(--ink-faint); font-size:.82rem; letter-spacing:.02em; background:var(--bg-soft); }
-
-  /* ---------- APPROACH ---------- */
-  .approach{ display:grid; gap:16px; background:transparent; border:none; }
-  @media(min-width:760px){ .approach{ grid-template-columns:repeat(3,1fr); } }
-  .step{ background:var(--bg-soft); border:1px solid var(--line); border-radius:14px; padding:34px 30px; }
-  .step .n{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:2.2rem; color:var(--cyan); line-height:1; letter-spacing:-.02em; }
-  .step h3{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1.1rem; margin:14px 0 8px; text-transform:none; letter-spacing:-.01em; color:var(--ink); }
-  .step p{ color:var(--ink-soft); font-size:.95rem; font-weight:400; }
-
-  /* ---------- CONTACT ---------- */
-  .contact{ text-align:center; padding:110px 0; border-top:1px solid var(--line); }
-  .contact h2{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(2rem,5.6vw,3.8rem); line-height:1.06; text-transform:none; letter-spacing:-.02em; color:var(--ink); }
-  .contact h2 em{ font-style:normal; color:var(--cyan); }
-  .contact p{ color:var(--ink-soft); margin:22px auto 38px; max-width:48ch; font-weight:400; }
-  .mail{ font-family:'JetBrains Mono',monospace; font-size:clamp(1rem,2.4vw,1.4rem); color:var(--cyan); border-bottom:1px solid var(--line-2); padding-bottom:6px; transition:border-color .2s, color .2s; }
-  .mail:hover{ border-color:var(--cyan); color:var(--cyan-dk); }
-
-  /* ---------- FOOTER ---------- */
-  footer{ border-top:1px solid var(--line); padding:40px 0; background:var(--bg-2); }
-  footer .wrap{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; align-items:center; }
-  footer .logo{ font-size:1.05rem; }
-  footer .social{ display:flex; gap:24px; }
-  footer .social a{ font-family:'Inter',sans-serif; font-size:.9rem; font-weight:500; color:var(--ink-soft); transition:color .2s; }
-  footer .social a:hover{ color:var(--cyan); }
-
-  /* ---------- CASE STUDY LABELS ---------- */
-  .project p strong{ color:var(--ink); font-weight:600; }
-  .project .case{ display:grid; gap:8px; margin-top:6px; }
-  .project .case span{ color:var(--ink-soft); font-size:.95rem; font-weight:400; }
-  .project .case b{ font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.04em; text-transform:uppercase; color:var(--cyan); font-weight:500; margin-right:8px; }
-
-  /* ---------- TESTIMONIALS ---------- */
-  .quotes{ display:grid; gap:22px; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); }
-  .quote{ background:var(--bg-soft); border:1px solid var(--line); border-radius:14px; padding:32px; position:relative; }
-  .quote::before{ content:"\201C"; font-family:'Plus Jakarta Sans',sans-serif; font-size:3.2rem; line-height:1; color:var(--cyan); opacity:.25; position:absolute; top:14px; right:20px; }
-  .quote p{ color:var(--ink); font-size:1.02rem; font-weight:400; line-height:1.6; }
-  .quote .who{ margin-top:20px; font-family:'JetBrains Mono',monospace; font-size:.82rem; letter-spacing:.02em; color:var(--cyan); }
-  .quote .who span{ display:block; color:var(--ink-faint); margin-top:3px; }
-
-  /* ---------- ABOUT ---------- */
-  .about-grid{ display:grid; gap:44px; align-items:center; }
-  @media(min-width:760px){ .about-grid{ grid-template-columns:.62fr 1fr; } }
-  .id-card{ position:relative; aspect-ratio:4/5; border:1px solid var(--line); border-radius:16px; background:var(--bg-soft);
-    display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .id-card img{ width:100%; height:100%; object-fit:cover; }
-  .id-card .ph{ font-family:'JetBrains Mono',monospace; font-size:.8rem; letter-spacing:.04em; color:var(--ink-faint); text-align:center; padding:20px;
-    background:var(--bg-soft); width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
-  .id-card::before, .id-card::after{ content:none; }
-  .about-bio p{ color:var(--ink-soft); font-size:1.05rem; font-weight:400; margin-bottom:16px; }
-  .about-bio p:first-child{ color:var(--ink); font-size:1.2rem; font-weight:500; }
-  .about-sign{ font-family:'JetBrains Mono',monospace; color:var(--cyan); font-size:.88rem; letter-spacing:.02em; margin-top:8px; }
-
-  /* ---------- reveal ---------- */
-  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
-  .reveal.in{ opacity:1; transform:none; }
-
-  /* ---------- CREDENTIALS (veteran hub) ---------- */
-  .vet-hub{ display:grid; grid-template-columns:1fr auto 1fr; column-gap:30px; row-gap:30px; align-items:center; justify-items:center; max-width:780px; margin:0 auto; }
-  .vet-core{ grid-area:2/2/3/3; position:relative; width:210px; height:210px; display:grid; place-items:center; background:var(--magenta);
-    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); filter:drop-shadow(0 10px 24px rgba(37,99,235,.28)); }
-  .vet-core-inner{ width:calc(100% - 4px); height:calc(100% - 4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px;
-    background:linear-gradient(160deg,#2563eb,#1d4ed8); clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); }
-  .vet-core .vlabel{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.85rem; letter-spacing:0; text-transform:none; color:#fff; }
-  .vet-core .vsub{ font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:#cfe0ff; }
-  .vet-node{ position:relative; background:var(--bg-soft); border:1px solid var(--line); border-top:2px solid var(--cyan); border-radius:10px; padding:22px 26px; text-align:center; min-width:158px; transition:border-color .3s, box-shadow .3s; }
-  .vet-node:hover{ box-shadow:0 8px 22px rgba(22,32,46,.08); }
-  .vet-node .big{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.35rem; color:var(--ink); letter-spacing:-.01em; }
-  .vet-node .sub{ font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint); margin-top:7px; }
-  .vet-node.top{ grid-area:1/2/2/3; align-self:end; }
-  .vet-node.bottom{ grid-area:3/2/4/3; align-self:start; }
-  .vet-node.left{ grid-area:2/1/3/2; justify-self:end; }
-  .vet-node.right{ grid-area:2/3/3/4; justify-self:start; }
-  .vet-node::after{ content:""; position:absolute; background:var(--line-2); }
-  .vet-node.top::after{ top:100%; left:50%; transform:translateX(-50%); width:2px; height:30px; }
-  .vet-node.bottom::after{ bottom:100%; left:50%; transform:translateX(-50%); width:2px; height:30px; }
-  .vet-node.left::after{ left:100%; top:50%; transform:translateY(-50%); height:2px; width:30px; }
-  .vet-node.right::after{ right:100%; top:50%; transform:translateY(-50%); height:2px; width:30px; }
-  a.vet-node{ text-decoration:none; color:inherit; cursor:pointer; }
-  a.vet-node:hover{ box-shadow:0 8px 22px rgba(37,99,235,.15); border-top-color:var(--cyan-dk); }
-  .vet-node .verify{ display:block; margin-top:10px; font-family:'JetBrains Mono',monospace; font-size:.58rem; letter-spacing:.06em; text-transform:uppercase; color:var(--cyan); opacity:.7; transition:opacity .2s; }
-  a.vet-node:hover .verify{ opacity:1; }
-  .verify-note{ text-align:center; margin:36px auto 0; font-family:'Inter',sans-serif; font-size:.88rem; letter-spacing:0; color:var(--ink-faint); }
-  .ec-row{ display:flex; justify-content:center; flex-wrap:wrap; gap:16px; margin-top:22px; }
-  .ec-cert{ display:inline-flex; align-items:center; gap:12px; padding:13px 22px; border:1px solid var(--line); border-radius:10px; background:var(--bg-soft); color:var(--ink); font-family:'JetBrains Mono',monospace; font-size:.82rem; letter-spacing:.02em; text-decoration:none; transition:border-color .2s, box-shadow .2s; }
-  .ec-cert:hover{ border-color:var(--cyan); box-shadow:0 6px 16px rgba(37,99,235,.12); }
-  .ec-cert .v{ color:var(--cyan); font-size:.66rem; letter-spacing:.06em; text-transform:uppercase; }
-  @media(max-width:720px){
-    .vet-hub{ grid-template-columns:1fr 1fr; column-gap:14px; row-gap:14px; }
-    .vet-core{ grid-area:auto; grid-column:1/-1; width:170px; height:170px; }
-    .vet-node.top, .vet-node.bottom, .vet-node.left, .vet-node.right{ grid-area:auto; justify-self:stretch; align-self:auto; min-width:0; }
-    .vet-node::after{ display:none; }
-  }
-
-  /* ---------- CONTACT FORM ---------- */
-  .contact2 .section-head h2 em{ font-style:normal; color:var(--cyan); }
-  .contact-grid{ display:grid; gap:42px; }
-  @media(min-width:820px){ .contact-grid{ grid-template-columns:.8fr 1.2fr; } }
-  .contact-info .ci-row{ padding:18px 0; border-top:1px solid var(--line); }
-  .contact-info .ci-row:first-child{ border-top:none; padding-top:0; }
-  .contact-info b{ display:block; font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px; font-weight:500; }
-  .contact-info a, .contact-info span{ color:var(--ink); font-size:1rem; }
-  .contact-info a{ color:var(--cyan); font-weight:500; }
-  .contact-info a:hover{ color:var(--cyan-dk); }
-  .contact-form{ display:grid; gap:18px; }
-  .contact-form label{ display:grid; gap:8px; font-family:'Plus Jakarta Sans',sans-serif; font-size:.84rem; letter-spacing:0; text-transform:none; font-weight:600; color:var(--ink); }
-  .req{ color:var(--cyan); }
-  .contact-form input, .contact-form select, .contact-form textarea{
-    background:#fff; border:1px solid var(--line-2); border-radius:10px; color:var(--ink); padding:13px 14px;
-    font-family:'Inter',sans-serif; font-size:1rem; width:100%; transition:border-color .2s, box-shadow .2s; }
-  .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus{
-    outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px rgba(37,99,235,.14); }
-  .contact-form textarea{ resize:vertical; min-height:120px; }
-  .contact-form select{ appearance:none; -webkit-appearance:none; cursor:pointer; }
-  .form-note{ font-size:.85rem; color:var(--ink-faint); font-weight:400; line-height:1.5; }
-  .form-status{ font-family:'Inter',sans-serif; font-size:.9rem; letter-spacing:0; min-height:1.3em; margin-top:2px; }
-  .contact-form .btn{ justify-self:start; border:none; }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ animation:none !important; }
-    .reveal{ opacity:1; transform:none; transition:none; }
-    .scanbeam{ display:none; }
-  }
-
-  @media(max-width:760px){
-    .nav-links{ display:none; }
-    .menu-btn{ display:block; }
-    .nav-links.open{
-      display:flex; flex-direction:column; position:absolute; top:72px; left:0; right:0;
-      background:#fff; border-bottom:1px solid var(--line); padding:24px 28px; gap:20px; box-shadow:0 10px 30px rgba(22,32,46,.08);
-    }
-    .stats{ gap:32px; }
-  }
-</style>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/plus-jakarta-sans.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter.woff2" crossorigin />
+<link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
 
@@ -346,18 +54,13 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <span class="kicker reveal">Guerra Digital Studio</span>
-      <div class="term reveal">Hi, I'm Freddy — your developer, start to finish.</div>
+      <span class="kicker">Guerra Digital Studio</span>
+      <div class="term">Hi, I'm Freddy — your developer, start to finish.</div>
       <h1 class="reveal">Websites built to be <em>fast</em>, <span class="out">secure</span>, and impossible to ignore.</h1>
-      <p class="lede reveal">I'm a freelance web developer who designs, ships, and defends sites for businesses that refuse to look like everyone else. Clean code, real performance, and security baked in from line one.</p>
-      <div class="hero-actions reveal">
+      <p class="lede">I'm a freelance web developer who designs, ships, and defends sites for businesses that refuse to look like everyone else. Clean code, real performance, and security baked in from line one.</p>
+      <div class="hero-actions">
         <a href="#contact" class="btn btn-primary">Start a project →</a>
         <a href="#work" class="btn btn-ghost">See the work</a>
-      </div>
-      <div class="stats reveal">
-        <div class="stat"><div class="n">100/100</div><div class="l">Lighthouse target</div></div>
-        <div class="stat"><div class="n">&lt;1s</div><div class="l">Load times</div></div>
-        <div class="stat"><div class="n">A+</div><div class="l">Security headers</div></div>
       </div>
     </div>
   </section>
@@ -553,7 +256,7 @@
           <input type="hidden" name="access_key" value="5c9f29e9-a94a-4398-9f3c-96eec64206ce">
           <input type="hidden" name="subject" value="New inquiry from guerradigitalstudio.com">
           <input type="hidden" name="from_name" value="Guerra Digital Studio website">
-          <input type="checkbox" name="botcheck" tabindex="-1" style="display:none" aria-hidden="true">
+          <input type="checkbox" name="botcheck" tabindex="-1" class="hp" aria-hidden="true">
           <label>Name <span class="req">*</span>
             <input type="text" name="name" required>
           </label>
@@ -594,61 +297,10 @@
       <a href="https://github.com/FJG-Web" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:info@guerradigitalstudio.com">Email</a>
     </div>
-    <span style="color:var(--ink-faint);font-family:'JetBrains Mono',monospace;font-size:.82rem;">© 2026 Guerra Digital Studio</span>
+    <span class="copyright">© 2026 Guerra Digital Studio</span>
   </div>
 </footer>
 
-<script>
-  const header = document.getElementById('header');
-  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
-  onScroll(); window.addEventListener('scroll', onScroll, { passive:true });
-
-  const btn = document.getElementById('menuBtn');
-  const links = document.getElementById('navLinks');
-  btn.addEventListener('click', () => links.classList.toggle('open'));
-  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting){ setTimeout(() => e.target.classList.add('in'), i * 70); io.unobserve(e.target); }
-    });
-  }, { threshold:.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // contact form -> Web3Forms (AJAX, with inline status)
-  const cform = document.querySelector('.contact-form');
-  if (cform) {
-    const status = document.getElementById('form-status');
-    cform.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!cform.checkValidity()) { cform.reportValidity(); return; }
-      const btn = cform.querySelector('button[type="submit"]');
-      const label = btn.textContent;
-      btn.textContent = 'Sending…'; btn.disabled = true;
-      status.textContent = ''; status.style.color = 'var(--ink-faint)';
-      try {
-        const res = await fetch(cform.action, {
-          method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: new FormData(cform)
-        });
-        const data = await res.json();
-        if (res.ok && data.success) {
-          cform.reset();
-          status.textContent = '✓ Message sent — I will get back to you within one business day.';
-          status.style.color = 'var(--cyan)';
-        } else {
-          status.textContent = 'Could not send. Please email info@guerradigitalstudio.com directly.';
-          status.style.color = '#dc2626';
-        }
-      } catch (err) {
-        status.textContent = 'Network error. Please email info@guerradigitalstudio.com directly.';
-        status.style.color = '#dc2626';
-      } finally {
-        btn.textContent = label; btn.disabled = false;
-      }
-    });
-  }
-</script>
+<script src="/assets/site.js" defer></script>
 </body>
 </html>
