@@ -27,7 +27,9 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Capture landing pages
         env:
-          TARGETS: '[["https://kwbearthworks.com/","assets/work/kwb-earthworks.jpg"],["https://guerramanagementgroup.com/","assets/work/guerra-management-group.jpg"]]'
+          # kwbearthworks.com is not captured here: Cloudflare bot protection challenges CI runners.
+          # Its snapshot (assets/work/kwb-earthworks.webp) is a manually supplied screenshot.
+          TARGETS: '[["https://guerramanagementgroup.com/","assets/work/guerra-management-group.jpg"]]'
         run: |
           set -euo pipefail
           mkdir -p assets/work
