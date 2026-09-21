@@ -1,0 +1,57 @@
+name: Refresh work screenshots
+
+# Manual: Actions tab -> "Refresh work screenshots" -> Run workflow.
+# Captures the live landing pages shown under "Selected work" and commits them to assets/work/.
+# Commits made with GITHUB_TOKEN do not trigger the deploy workflow, so this job deploys nothing by itself:
+# the refreshed images ship with the next push to main (or re-run the Azure Static Web Apps workflow).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright + Chromium
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/pw" && cd "$RUNNER_TEMP/pw"
+          npm init -y >/dev/null
+          npm install --silent playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Capture landing pages
+        env:
+          TARGETS: '[["https://kwbearthworks.com/","assets/work/kwb-earthworks.jpg"],["https://guerramanagementgroup.com/","assets/work/guerra-management-group.jpg"]]'
+        run: |
+          set -euo pipefail
+          mkdir -p assets/work
+          cat > "$RUNNER_TEMP/pw/shot.cjs" <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{const b=await chromium.launch();
+          const root=process.env.GITHUB_WORKSPACE+'/';
+          for(const [url,out] of JSON.parse(process.env.TARGETS)){
+            const c=await b.newContext({viewport:{width:1280,height:800},deviceScaleFactor:0.75,reducedMotion:'reduce'});
+            const p=await c.newPage();
+            await p.goto(url,{waitUntil:'networkidle',timeout:60000});
+            await p.waitForTimeout(1500);
+            await p.screenshot({path:root+out,type:'jpeg',quality:72});
+            console.log('captured',url,'->',out);
+            await c.close();}
+          await b.close()})().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          cd "$RUNNER_TEMP/pw" && node shot.cjs
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/work
+          git diff --cached --quiet && { echo "No changes"; exit 0; }
+          git commit -m "Refresh work screenshots"
+          git push
